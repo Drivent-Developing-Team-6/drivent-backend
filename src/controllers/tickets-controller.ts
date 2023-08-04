@@ -2,6 +2,7 @@ import { AuthenticatedRequest } from "@/middlewares";
 import ticketService from "@/services/tickets-service";
 import { Response } from "express";
 import httpStatus from "http-status";
+import { InputTicketBody } from '@/protocols';
 
 export async function getTicketTypes(req: AuthenticatedRequest, res: Response) {
   try {
@@ -27,9 +28,7 @@ export async function getTickets(req: AuthenticatedRequest, res: Response) {
 
 export async function createTicket(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
-
-  //TODO validação do JOI
-  const { ticketTypeId } = req.body;
+  const { ticketTypeId } = req.body as InputTicketBody;
 
   if (!ticketTypeId) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
