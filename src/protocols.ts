@@ -48,3 +48,7 @@ export type PaymentParams = Omit<Payment, 'id' | 'createdAt' | 'updatedAt'>;
 export type InputTicketBody = {
   ticketTypeId: number;
 };
+
+export type ActivitiesDates = {
+  startsAt: Date;
+};

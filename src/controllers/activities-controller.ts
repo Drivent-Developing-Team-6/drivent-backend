@@ -1,12 +1,14 @@
 import { NextFunction, Response } from 'express';
 import httpStatus from 'http-status';
 import { AuthenticatedRequest } from '@/middlewares';
+import activitiesService from '@/services/activities-service';
 
-export async function findDates(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export async function findDates(req: AuthenticatedRequest, res: Response) {
   try {
-    res.status(200).send("findDates");
+    const dates: string[] = await activitiesService.findActivitiesDates();
+    res.status(httpStatus.OK).send(dates);
   } catch (error) {
-    next(error);
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
 }
 
