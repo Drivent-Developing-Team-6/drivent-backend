@@ -12,11 +12,13 @@ export async function findDates(req: AuthenticatedRequest, res: Response) {
   }
 }
 
-export async function findActivitiesByDate(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export async function findActivitiesByDate(req: AuthenticatedRequest, res: Response) {
+  const { date } = req.query;
   try {
-    res.status(200).send("findActivitiesByDate");
+    const activitiesByDate = await activitiesService.findActivitiesByDate(date as string);
+    res.status(httpStatus.OK).send(activitiesByDate);
   } catch (error) {
-    next(error);
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
 }
 
