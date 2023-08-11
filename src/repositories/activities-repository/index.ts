@@ -1,6 +1,6 @@
 import { Activity } from '@prisma/client';
 import { prisma } from '@/config';
-import { ActivitiesDates, LocationsActivitiesInput } from '@/protocols';
+import { ActivitiesDates } from '@/protocols';
 
 async function findActivitiesDates(): Promise<ActivitiesDates[]> {
   return prisma.activity.findMany({
@@ -34,9 +34,38 @@ async function findActivitiesByDate(date: Date) {
   })
 }
 
+async function findActivityById(id: number): Promise<Activity> {
+  return prisma.activity.findUnique({
+    where: { id },
+  });
+}
+
+async function findSubscriptionsByEnrollmentId(enrollmentId: number) {
+  return await prisma.subscription.findMany({
+    where: {
+      enrollmentId: enrollmentId,
+    },
+  });
+}
+
+async function findSubscriptionsByActivityId(activityId: number, enrollmentId: number) {
+  return prisma.subscription.findFirst({
+    where: {
+      enrollmentId: enrollmentId,
+      activityId: activityId,
+    },
+    include: {
+      Activity: true,
+    }
+  });
+}
+
 const activitiesRepository = {
   findActivitiesByDate,
-  findActivitiesDates
+  findActivitiesDates,
+  findActivityById,
+  findSubscriptionsByEnrollmentId,
+  findSubscriptionsByActivityId,
 };
 
 export default activitiesRepository;

@@ -22,11 +22,16 @@ export async function findActivitiesByDate(req: AuthenticatedRequest, res: Respo
   }
 }
 
-export async function findActivitiesByUserId(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export async function findActivitiesByEnrollmentId(req: AuthenticatedRequest, res: Response) {
+    const { userId } = req;
+    const activityId = Number(req.params.activityId);
+    if (!activityId) return res.sendStatus(httpStatus.BAD_REQUEST);
+
   try {
-    res.status(200).send("findActivitiesByUserId");
+    const subscribedActivities = await activitiesService.findSubscriptionsByEnrollmentId(userId, activityId);
+    return res.status(httpStatus.OK).send(subscribedActivities);
   } catch (error) {
-    next(error);
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
 }
 

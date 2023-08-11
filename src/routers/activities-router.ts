@@ -3,7 +3,7 @@ import { authenticateToken } from '@/middlewares';
 import {
   findDates,
   findActivitiesByDate,
-  findActivitiesByUserId,
+  findActivitiesByEnrollmentId,
   subscribeInActivity,
 } from '@/controllers';
 
@@ -13,7 +13,7 @@ activitiesRouter
   .all('/*', authenticateToken)
   .get('/dates', findDates)
   .get('/', findActivitiesByDate)
-  .get('/subscriptions', findActivitiesByUserId)
+  .get('/subscriptions/:activityId', findActivitiesByEnrollmentId)
   .post('/', subscribeInActivity)
 
 export { activitiesRouter };

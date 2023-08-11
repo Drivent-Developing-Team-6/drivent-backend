@@ -1,3 +1,4 @@
+import enrollmentRepository from "../../repositories/enrollment-repository";
 import { invalidDate } from '@/errors/invalid-date-error';
 import { LocationsActivitiesInput, ActivitiesDates } from '@/protocols';
 import activitiesRepository from '@/repositories/activities-repository';
@@ -30,9 +31,21 @@ async function findActivitiesByDate(date: string): Promise<LocationsActivitiesIn
   return activitiesByDateFormated;
 }
 
+async function findSubscriptionsByEnrollmentId(userId: number, activityId: number) {
+  const enrollment =  await enrollmentRepository.findWithAddressByUserId(userId);
+  if (!enrollment) throw notFoundError();
+
+  const activities =  await activitiesRepository.findActivityById(activityId);
+  if (!activities) throw notFoundError();
+
+  const subscription = await activitiesRepository.findSubscriptionsByActivityId(activityId, enrollment.id)
+  return subscription
+}
+
 const activitiesService = {
   findActivitiesDates,
-  findActivitiesByDate
+  findActivitiesByDate,
+  findSubscriptionsByEnrollmentId,
 };
 
 export default activitiesService;

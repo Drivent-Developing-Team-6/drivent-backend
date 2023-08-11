@@ -54,6 +54,7 @@ model Enrollment {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   Ticket    Ticket[]
+  Subscription Subscription[]
 }
 
 model Address {
@@ -165,6 +166,8 @@ model Subscription {
   id         Int        @id @default(autoincrement())
   userId     Int
   User       User       @relation(fields: [userId], references: [id])
+  enrollmentId  Int
+  Enrollment  Enrollment  @relation(fields: [enrollmentId], references: [id])
   activityId Int
   Activity Activity @relation(fields: [activityId], references: [id])
   createdAt DateTime @default(now())
