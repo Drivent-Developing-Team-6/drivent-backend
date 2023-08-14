@@ -35,10 +35,16 @@ export async function findActivitiesByEnrollmentId(req: AuthenticatedRequest, re
   }
 }
 
-export async function subscribeInActivity(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export async function postSubscription(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;
+  const { activityId } = req.body;
+  if (!activityId) return res.sendStatus(httpStatus.BAD_REQUEST);
+
   try {
-    res.status(400).send("findActivitiesByUserId");
+    const subscription = await activitiesService.postSubscription(userId, Number(activityId));
+    
+    return res.status(httpStatus.CREATED).send(subscription);
   } catch (error) {
-    next(error);
+    return res.sendStatus(httpStatus.NOT_FOUND);
   }
 }

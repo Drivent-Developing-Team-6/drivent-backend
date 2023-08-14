@@ -4,7 +4,7 @@ import {
   findDates,
   findActivitiesByDate,
   findActivitiesByEnrollmentId,
-  subscribeInActivity,
+  postSubscription,
 } from '@/controllers';
 
 const activitiesRouter = Router();
@@ -14,6 +14,6 @@ activitiesRouter
   .get('/dates', findDates)
   .get('/', findActivitiesByDate)
   .get('/subscriptions/:activityId', findActivitiesByEnrollmentId)
-  .post('/', subscribeInActivity)
+  .post('/subscriptions', postSubscription)
 
 export { activitiesRouter };

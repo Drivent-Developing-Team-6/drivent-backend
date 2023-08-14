@@ -60,12 +60,22 @@ async function findSubscriptionsByActivityId(activityId: number, enrollmentId: n
   });
 }
 
+async function createSubscription(activityId: number, enrollmentId: number) {
+  return await prisma.subscription.create({
+    data: {
+      enrollmentId,
+      activityId,
+    },
+  });
+}
+
 const activitiesRepository = {
   findActivitiesByDate,
   findActivitiesDates,
   findActivityById,
   findSubscriptionsByEnrollmentId,
   findSubscriptionsByActivityId,
+  createSubscription
 };
 
 export default activitiesRepository;
